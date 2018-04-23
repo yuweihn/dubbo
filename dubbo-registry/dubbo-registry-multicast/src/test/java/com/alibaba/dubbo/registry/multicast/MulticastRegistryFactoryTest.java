@@ -14,15 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.examples.version.impl;
+package com.alibaba.dubbo.registry.multicast;
 
-import com.alibaba.dubbo.examples.version.api.VersionService;
+import com.alibaba.dubbo.common.URL;
+import com.alibaba.dubbo.registry.Registry;
+import org.junit.Test;
 
-public class VersionServiceImpl implements VersionService {
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
-    @Override
-    public String sayHello(String name) {
-        return "hello, " + name;
+public class MulticastRegistryFactoryTest {
+    @Test
+    public void shouldCreateRegistry() {
+        Registry registry = new MulticastRegistryFactory().createRegistry(URL.valueOf("multicast://239.255.255.255/"));
+        assertThat(registry, not(nullValue()));
+        assertThat(registry.isAvailable(), is(true));
     }
-
 }
