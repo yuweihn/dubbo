@@ -14,32 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
+package org.apache.dubbo.common.extension;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.alibaba.dubbo.common.extension.ExtensionFactory;
 
-/**
- * See @org.apache.dubbo.common.extension.Activate
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Deprecated
-public @interface Activate {
+public class MyExtensionFactory implements ExtensionFactory {
 
-    String[] group() default {};
-
-    String[] value() default {};
-
-    @Deprecated
-    String[] before() default {};
-
-    @Deprecated
-    String[] after() default {};
-
-    int order() default 0;
+    @Override
+    public <T> T getExtension(Class<T> type, String name) {
+        return null;
+    }
 }

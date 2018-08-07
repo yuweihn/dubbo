@@ -14,32 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.apache.dubbo.filter;
 
-/**
- * See @org.apache.dubbo.common.extension.Activate
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Deprecated
-public @interface Activate {
+import com.alibaba.dubbo.rpc.Filter;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
 
-    String[] group() default {};
 
-    String[] value() default {};
+public class MyFilter implements Filter {
 
-    @Deprecated
-    String[] before() default {};
+    public static int count = 0;
 
-    @Deprecated
-    String[] after() default {};
+    @Override
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        count++;
 
-    int order() default 0;
+        if (invocation.getArguments()[0].equals("aa")) {
+            throw new RpcException(new IllegalArgumentException("arg0 illegal"));
+        }
+
+        Result tmp = invoker.invoke(invocation);
+        return tmp;
+    }
 }

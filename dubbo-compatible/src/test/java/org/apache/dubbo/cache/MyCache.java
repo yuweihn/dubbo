@@ -14,32 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.apache.dubbo.cache;
 
-/**
- * See @org.apache.dubbo.common.extension.Activate
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Deprecated
-public @interface Activate {
+import com.alibaba.dubbo.cache.Cache;
+import com.alibaba.dubbo.common.URL;
 
-    String[] group() default {};
+import java.util.HashMap;
+import java.util.Map;
 
-    String[] value() default {};
+public class MyCache implements Cache {
 
-    @Deprecated
-    String[] before() default {};
+    private Map<Object, Object> map = new HashMap<Object, Object>();
 
-    @Deprecated
-    String[] after() default {};
+    public MyCache(URL url) {
+    }
 
-    int order() default 0;
+    @Override
+    public void put(Object key, Object value) {
+        map.put(key, value);
+    }
+
+    @Override
+    public Object get(Object key) {
+        return map.get(key);
+    }
 }

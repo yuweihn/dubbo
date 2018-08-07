@@ -14,32 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
+package org.apache.dubbo.service;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.Serializable;
 
-/**
- * See @org.apache.dubbo.common.extension.Activate
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Deprecated
-public @interface Activate {
+@SuppressWarnings("serial")
+public class CustomArgument implements Serializable {
 
-    String[] group() default {};
+    Type type;
+    String name;
 
-    String[] value() default {};
+    public CustomArgument() {
+    }
+    public CustomArgument(Type type, String name) {
+        super();
+        this.type = type;
+        this.name = name;
+    }
 
-    @Deprecated
-    String[] before() default {};
+    public Type getType() {
+        return type;
+    }
 
-    @Deprecated
-    String[] after() default {};
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-    int order() default 0;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

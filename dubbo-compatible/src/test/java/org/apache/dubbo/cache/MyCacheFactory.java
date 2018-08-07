@@ -14,32 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.apache.dubbo.cache;
 
-/**
- * See @org.apache.dubbo.common.extension.Activate
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Deprecated
-public @interface Activate {
+import com.alibaba.dubbo.cache.Cache;
+import com.alibaba.dubbo.cache.support.AbstractCacheFactory;
+import com.alibaba.dubbo.common.URL;
 
-    String[] group() default {};
+public class MyCacheFactory extends AbstractCacheFactory {
 
-    String[] value() default {};
-
-    @Deprecated
-    String[] before() default {};
-
-    @Deprecated
-    String[] after() default {};
-
-    int order() default 0;
+    @Override
+    protected Cache createCache(URL url) {
+        return new MyCache(url);
+    }
 }

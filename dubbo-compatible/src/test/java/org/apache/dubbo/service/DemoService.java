@@ -14,32 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
+package org.apache.dubbo.service;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface DemoService {
+    String sayHello(String name);
 
-/**
- * See @org.apache.dubbo.common.extension.Activate
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Deprecated
-public @interface Activate {
+    long timestamp();
 
-    String[] group() default {};
+    String getThreadName();
 
-    String[] value() default {};
+    int getSize(String[] strs);
 
-    @Deprecated
-    String[] before() default {};
+    int getSize(Object[] os);
 
-    @Deprecated
-    String[] after() default {};
+    Object invoke(String service, String method) throws Exception;
 
-    int order() default 0;
+    int stringLength(String str);
+
+    Type enumlength(Type... types);
+
+//	Type enumlength(Type type);
+
+    String get(CustomArgument arg1);
+
+    byte getbyte(byte arg);
+
 }
