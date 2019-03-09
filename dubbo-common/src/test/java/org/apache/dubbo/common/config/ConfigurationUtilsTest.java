@@ -14,24 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo.rpc.cluster.router.condition.config;
+package org.apache.dubbo.common.config;
 
 import org.apache.dubbo.common.Constants;
-import org.apache.dubbo.common.URL;
-import org.apache.dubbo.configcenter.DynamicConfiguration;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * Application level router, "application.condition-router"
+ *
  */
-public class AppRouter extends ListenableRouter {
-    public static final String NAME = "APP_ROUTER";
-    /**
-     * AppRouter should after ServiceRouter
-     */
-    private static final int APP_ROUTER_DEFAULT_PRIORITY = 150;
+public class ConfigurationUtilsTest {
 
-    public AppRouter(DynamicConfiguration configuration, URL url) {
-        super(configuration, url, url.getParameter(Constants.APPLICATION_KEY));
-        this.priority = APP_ROUTER_DEFAULT_PRIORITY;
+    @Test
+    public void testGetServerShutdownTimeout () {
+        System.setProperty(Constants.SHUTDOWN_WAIT_KEY, " 10000");
+        Assertions.assertEquals(10000, ConfigurationUtils.getServerShutdownTimeout());
+        System.clearProperty(Constants.SHUTDOWN_WAIT_KEY);
+    }
+
+    @Test
+    public void testGetProperty () {
+        System.setProperty(Constants.SHUTDOWN_WAIT_KEY, " 10000");
+        Assertions.assertEquals("10000", ConfigurationUtils.getProperty(Constants.SHUTDOWN_WAIT_KEY));
+        System.clearProperty(Constants.SHUTDOWN_WAIT_KEY);
     }
 }

@@ -60,12 +60,24 @@ There's a [README](https://github.com/apache/incubator-dubbo-samples/tree/master
 <dependencies>
     <dependency>
         <groupId>org.apache.dubbo</groupId>
-        <artifactId>dubbo-parent</artifactId>
+        <artifactId>dubbo</artifactId>
         <version>${dubbo.version}</version>
     </dependency>
     <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-framework</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.curator</groupId>
+        <artifactId>curator-recipes</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
     </dependency>
 </dependencies>
 ```
@@ -208,7 +220,7 @@ Please follow the [template](https://github.com/apache/incubator-dubbo/issues/ne
 
 ## Reporting a security vulnerability
 
-Please report security vulnerability to [us](security@dubbo.incubator.apache.org) privately.
+Please report security vulnerability to [us](mailto:security@dubbo.incubator.apache.org) privately.
 
 ## Dubbo ecosystem
 
@@ -223,6 +235,7 @@ Please report security vulnerability to [us](security@dubbo.incubator.apache.org
 * [Node.js](https://github.com/dubbo/dubbo2.js)
 * [Python](https://github.com/dubbo/dubbo-client-py)
 * [PHP](https://github.com/dubbo/dubbo-php-framework)
+* [Go](https://github.com/dubbo/dubbo-go)
 
 ## License
 
