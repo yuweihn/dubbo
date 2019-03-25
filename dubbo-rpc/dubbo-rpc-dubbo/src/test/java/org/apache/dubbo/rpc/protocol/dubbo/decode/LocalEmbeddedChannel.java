@@ -14,28 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo.validation.support.jvalidation.mock;
+package org.apache.dubbo.rpc.protocol.dubbo.decode;
 
-import org.apache.dubbo.validation.MethodValidated;
+import org.apache.dubbo.common.utils.NetUtils;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
+import io.netty.channel.embedded.EmbeddedChannel;
 
-public interface JValidatorTestTarget {
-    @MethodValidated
-    public void someMethod1(String anything);
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 
-    @MethodValidated(Test2.class)
-    public void someMethod2(@NotNull ValidationParameter validationParameter);
-
-    public void someMethod3(ValidationParameter[] parameters);
-
-    public void someMethod4(List<String> strings);
-
-    public void someMethod5(Map<String, String> map);
-
-    @interface Test2 {
+public class LocalEmbeddedChannel extends EmbeddedChannel {
+    public SocketAddress localAddress() {
+        return new InetSocketAddress(20883);
     }
 
+    @Override
+    protected SocketAddress remoteAddress0() {
+        return new InetSocketAddress(NetUtils.getAvailablePort());
+    }
 }

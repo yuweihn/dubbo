@@ -14,28 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo.validation.support.jvalidation.mock;
 
-import org.apache.dubbo.validation.MethodValidated;
+package org.apache.dubbo.configcenter.support.etcd;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.configcenter.AbstractDynamicConfigurationFactory;
+import org.apache.dubbo.configcenter.DynamicConfiguration;
 
-public interface JValidatorTestTarget {
-    @MethodValidated
-    public void someMethod1(String anything);
+/**
+ * The etcd implementation of {@link AbstractDynamicConfigurationFactory}
+ */
+public class EtcdDynamicConfigurationFactory extends AbstractDynamicConfigurationFactory {
 
-    @MethodValidated(Test2.class)
-    public void someMethod2(@NotNull ValidationParameter validationParameter);
-
-    public void someMethod3(ValidationParameter[] parameters);
-
-    public void someMethod4(List<String> strings);
-
-    public void someMethod5(Map<String, String> map);
-
-    @interface Test2 {
+    @Override
+    protected DynamicConfiguration createDynamicConfiguration(URL url) {
+        return new EtcdDynamicConfiguration(url);
     }
-
 }

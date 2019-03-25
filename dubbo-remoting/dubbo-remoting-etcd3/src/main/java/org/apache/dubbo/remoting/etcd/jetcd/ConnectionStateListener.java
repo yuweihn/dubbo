@@ -14,28 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo.validation.support.jvalidation.mock;
 
-import org.apache.dubbo.validation.MethodValidated;
+package org.apache.dubbo.remoting.etcd.jetcd;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
+import io.etcd.jetcd.Client;
 
-public interface JValidatorTestTarget {
-    @MethodValidated
-    public void someMethod1(String anything);
+public interface ConnectionStateListener {
 
-    @MethodValidated(Test2.class)
-    public void someMethod2(@NotNull ValidationParameter validationParameter);
-
-    public void someMethod3(ValidationParameter[] parameters);
-
-    public void someMethod4(List<String> strings);
-
-    public void someMethod5(Map<String, String> map);
-
-    @interface Test2 {
-    }
-
+    /**
+     * Called when there is a state change in the connection
+     *
+     * @param client   the client
+     * @param newState the new state
+     */
+    void stateChanged(Client client, int newState);
 }

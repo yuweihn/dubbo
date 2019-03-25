@@ -14,28 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo.validation.support.jvalidation.mock;
+package org.apache.dubbo.rpc.protocol.dubbo.decode;
 
-import org.apache.dubbo.validation.MethodValidated;
+import org.apache.dubbo.remoting.ChannelHandler;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
 
-public interface JValidatorTestTarget {
-    @MethodValidated
-    public void someMethod1(String anything);
+import java.util.function.Consumer;
 
-    @MethodValidated(Test2.class)
-    public void someMethod2(@NotNull ValidationParameter validationParameter);
+public class MockHandler extends ChannelDuplexHandler {
+    private final Consumer consumer;
 
-    public void someMethod3(ValidationParameter[] parameters);
+    private final ChannelHandler handler;
 
-    public void someMethod4(List<String> strings);
-
-    public void someMethod5(Map<String, String> map);
-
-    @interface Test2 {
+    public MockHandler(Consumer consumer, ChannelHandler handler) {
+        this.consumer = consumer;
+        this.handler = handler;
     }
 
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        this.handler.received(new MockChannel(consumer), msg);
+    }
 }
