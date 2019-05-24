@@ -214,6 +214,13 @@
         </dependency>
         <dependency>
             <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-rpc-xml</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -271,6 +278,13 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-sofa</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-registry-multiple</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
@@ -389,6 +403,13 @@
         </dependency>
         <dependency>
             <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-serialization-protobuf-json</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-configcenter-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -404,6 +425,13 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-configcenter-apollo</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-configcenter-nacos</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
@@ -467,6 +495,13 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-metadata-report-etcd</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-metadata-report-nacos</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
@@ -555,6 +590,7 @@
                                     <include>org.apache.dubbo:dubbo-rpc-memcached</include>
                                     <include>org.apache.dubbo:dubbo-rpc-redis</include>
                                     <include>org.apache.dubbo:dubbo-rpc-rest</include>
+                                    <include>org.apache.dubbo:dubbo-rpc-xml</include>
                                     <include>org.apache.dubbo:dubbo-filter-validation</include>
                                     <include>org.apache.dubbo:dubbo-filter-cache</include>
                                     <include>org.apache.dubbo:dubbo-cluster</include>
@@ -567,6 +603,7 @@
                                     <include>org.apache.dubbo:dubbo-registry-etcd3</include>
                                     <include>org.apache.dubbo:dubbo-registry-nacos</include>
                                     <include>org.apache.dubbo:dubbo-registry-sofa</include>
+                                    <include>org.apache.dubbo:dubbo-registry-multiple</include>
                                     <include>org.apache.dubbo:dubbo-monitor-api</include>
                                     <include>org.apache.dubbo:dubbo-monitor-default</include>
                                     <include>org.apache.dubbo:dubbo-config-api</include>
@@ -585,18 +622,21 @@
                                     <include>org.apache.dubbo:dubbo-serialization-jdk</include>
                                     <include>org.apache.dubbo:dubbo-serialization-protostuff</include>
                                     <include>org.apache.dubbo:dubbo-serialization-gson</include>
+                                    <include>org.apache.dubbo:dubbo-serialization-googlePb</include>
                                     <include>org.apache.dubbo:dubbo-configcenter-api</include>
                                     <include>org.apache.dubbo:dubbo-configcenter-definition</include>
                                     <include>org.apache.dubbo:dubbo-configcenter-apollo</include>
                                     <include>org.apache.dubbo:dubbo-configcenter-zookeeper</include>
                                     <include>org.apache.dubbo:dubbo-configcenter-consul</include>
                                     <include>org.apache.dubbo:dubbo-configcenter-etcd</include>
+                                    <include>org.apache.dubbo:dubbo-configcenter-nacos</include>
                                     <include>org.apache.dubbo:dubbo-metadata-report-api</include>
                                     <include>org.apache.dubbo:dubbo-metadata-definition</include>
                                     <include>org.apache.dubbo:dubbo-metadata-report-redis</include>
                                     <include>org.apache.dubbo:dubbo-metadata-report-zookeeper</include>
                                     <include>org.apache.dubbo:dubbo-metadata-report-consul</include>
                                     <include>org.apache.dubbo:dubbo-metadata-report-etcd</include>
+                                    <include>org.apache.dubbo:dubbo-metadata-report-nacos</include>
                                     <include>org.apache.dubbo:dubbo-serialization-native-hession</include>
                                     <include>org.apache.dubbo:dubbo-rpc-native-thrift</include>
                                 </includes>
