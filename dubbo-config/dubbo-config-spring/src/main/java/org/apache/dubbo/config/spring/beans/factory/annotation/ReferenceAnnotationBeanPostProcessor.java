@@ -16,8 +16,18 @@
  */
 package org.apache.dubbo.config.spring.beans.factory.annotation;
 
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ConsumerConfig;
+import org.apache.dubbo.config.MetadataReportConfig;
+import org.apache.dubbo.config.MetricsConfig;
+import org.apache.dubbo.config.ModuleConfig;
+import org.apache.dubbo.config.MonitorConfig;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.ProviderConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.spring.ConfigCenterBean;
 import org.apache.dubbo.config.spring.ReferenceBean;
 import org.apache.dubbo.config.spring.ServiceBean;
 import org.apache.dubbo.config.spring.context.event.ServiceBeanExportedEvent;
@@ -48,6 +58,7 @@ import java.util.concurrent.ConcurrentMap;
 import static java.lang.reflect.Proxy.newProxyInstance;
 import static org.apache.dubbo.config.spring.beans.factory.annotation.ServiceBeanNameBuilder.create;
 import static org.apache.dubbo.config.spring.util.AnnotationUtils.getAttribute;
+import static org.springframework.beans.factory.BeanFactoryUtils.beansOfTypeIncludingAncestors;
 import static org.springframework.util.StringUtils.hasText;
 
 /**
@@ -83,11 +94,36 @@ public class ReferenceAnnotationBeanPostProcessor extends AnnotationInjectedBean
 
     private ApplicationContext applicationContext;
 
+    private volatile boolean preparedDubboConfigBeans;
+
     /**
      * To support the legacy annotation that is @com.alibaba.dubbo.config.annotation.Reference since 2.7.3
      */
     public ReferenceAnnotationBeanPostProcessor() {
         super(Reference.class, com.alibaba.dubbo.config.annotation.Reference.class);
+    }
+
+    private void prepareDubboConfigBeans() {
+
+        if (preparedDubboConfigBeans) {
+            return;
+        }
+
+        preparedDubboConfigBeans = true;
+
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+
+        // Initializes there Dubbo's Config Beans before @Reference bean autowiring
+        beansOfTypeIncludingAncestors(beanFactory, ApplicationConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, ModuleConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, RegistryConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, ProtocolConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, MonitorConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, ProviderConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, ConsumerConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, ConfigCenterBean.class);
+        beansOfTypeIncludingAncestors(beanFactory, MetadataReportConfig.class);
+        beansOfTypeIncludingAncestors(beanFactory, MetricsConfig.class);
     }
 
     /**
@@ -123,6 +159,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AnnotationInjectedBean
     @Override
     protected Object doGetInjectedBean(AnnotationAttributes attributes, Object bean, String beanName, Class<?> injectedType,
                                        InjectionMetadata.InjectedElement injectedElement) throws Exception {
+        prepareDubboConfigBeans();
 
         /**
          * The name of bean that annotated Dubbo's {@link Service @Service} in local Spring {@link ApplicationContext}
@@ -242,7 +279,11 @@ public class ReferenceAnnotationBeanPostProcessor extends AnnotationInjectedBean
         if (existsServiceBean(referencedBeanName)) { // If the local @Service Bean exists, build a proxy of ReferenceBean
             return newProxyInstance(getClassLoader(), new Class[]{serviceInterfaceType},
                     wrapInvocationHandler(referenceBeanName, referenceBean));
-        } else {                                    // ReferenceBean should be initialized and get immediately
+        } else { // ReferenceBean should be initialized and get immediately
+            /**
+             * TODO, if we can make sure this happens after {@link DubboLifecycleComponentApplicationListener},
+             * TODO, then we can avoid starting bootstrap in here, because bootstrap should has been started.
+             */
             return referenceBean.get();
         }
     }
