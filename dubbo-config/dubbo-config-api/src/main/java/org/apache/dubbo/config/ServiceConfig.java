@@ -32,8 +32,8 @@ import org.apache.dubbo.config.annotation.Service;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.event.ServiceConfigExportedEvent;
 import org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker;
-import org.apache.dubbo.config.service.ServiceConfigBase;
 import org.apache.dubbo.config.support.Parameter;
+import org.apache.dubbo.config.utils.ConfigValidationUtils;
 import org.apache.dubbo.event.Event;
 import org.apache.dubbo.event.EventDispatcher;
 import org.apache.dubbo.metadata.WritableMetadataService;
@@ -220,13 +220,11 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
         completeCompoundConfigs();
         checkDefault();
         checkProtocol();
-        checkApplication();
         // if protocol is not injvm checkRegistry
         if (!isOnlyInJvm()) {
             checkRegistry();
         }
         this.refresh();
-        checkMetadataReport();
 
         if (StringUtils.isEmpty(interfaceName)) {
             throw new IllegalStateException("<dubbo:service interface=\"\" /> interface not allow null!");
@@ -277,7 +275,8 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
             }
         }
         checkStubAndLocal(interfaceClass);
-        BootstrapUtils.checkMock(interfaceClass, this);
+        ConfigValidationUtils.checkMock(interfaceClass, this);
+        ConfigValidationUtils.validateServiceConfig(this);
         appendParameters();
     }
 
@@ -312,7 +311,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
                 serviceMetadata
         );
 
-        List<URL> registryURLs = BootstrapUtils.loadRegistries(this, true);
+        List<URL> registryURLs = ConfigValidationUtils.loadRegistries(this, true);
 
         for (ProtocolConfig protocolConfig : protocols) {
             String pathKey = URL.buildKey(getContextPath(protocolConfig)
@@ -456,7 +455,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
                             continue;
                         }
                         url = url.addParameterIfAbsent(DYNAMIC_KEY, registryURL.getParameter(DYNAMIC_KEY));
-                        URL monitorUrl = BootstrapUtils.loadMonitor(this, registryURL);
+                        URL monitorUrl = ConfigValidationUtils.loadMonitor(this, registryURL);
                         if (monitorUrl != null) {
                             url = url.addParameterAndEncoded(MONITOR_KEY, monitorUrl.toFullString());
                         }
@@ -703,7 +702,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
      * Dispatch an {@link Event event}
      *
      * @param event an {@link Event event}
-     * @since 2.7.4
+     * @since 2.7.5
      */
     private void dispatch(Event event) {
         EventDispatcher.getDefaultExtension().dispatch(event);

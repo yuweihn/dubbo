@@ -30,7 +30,7 @@ import org.apache.dubbo.common.utils.UrlUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.event.ReferenceConfigDestroyedEvent;
-import org.apache.dubbo.config.service.ReferenceConfigBase;
+import org.apache.dubbo.config.utils.ConfigValidationUtils;
 import org.apache.dubbo.event.Event;
 import org.apache.dubbo.event.EventDispatcher;
 import org.apache.dubbo.metadata.WritableMetadataService;
@@ -204,7 +204,7 @@ public class ReferenceConfig<T> extends ReferenceConfigBase<T> {
         serviceMetadata.setServiceKey(URL.buildKey(interfaceName, group, version));
 
         checkStubAndLocal(interfaceClass);
-        BootstrapUtils.checkMock(interfaceClass, this);
+        ConfigValidationUtils.checkMock(interfaceClass, this);
 
         Map<String, String> map = new HashMap<String, String>();
         map.put(SIDE_KEY, CONSUMER_SIDE);
@@ -312,10 +312,10 @@ public class ReferenceConfig<T> extends ReferenceConfigBase<T> {
                 // if protocols not injvm checkRegistry
                 if (!LOCAL_PROTOCOL.equalsIgnoreCase(getProtocol())) {
                     checkRegistry();
-                    List<URL> us = BootstrapUtils.loadRegistries(this, false);
+                    List<URL> us = ConfigValidationUtils.loadRegistries(this, false);
                     if (CollectionUtils.isNotEmpty(us)) {
                         for (URL u : us) {
-                            URL monitorUrl = BootstrapUtils.loadMonitor(this, u);
+                            URL monitorUrl = ConfigValidationUtils.loadMonitor(this, u);
                             if (monitorUrl != null) {
                                 map.put(MONITOR_KEY, URL.encode(monitorUrl.toFullString()));
                             }
@@ -406,8 +406,7 @@ public class ReferenceConfig<T> extends ReferenceConfigBase<T> {
             checkInterfaceAndMethods(interfaceClass, getMethods());
         }
         resolveFile();
-        checkApplication();
-        checkMetadataReport();
+        ConfigValidationUtils.validateReferenceConfig(this);
         appendParameters();
     }
 
@@ -441,7 +440,7 @@ public class ReferenceConfig<T> extends ReferenceConfigBase<T> {
      * Dispatch an {@link Event event}
      *
      * @param event an {@link Event event}
-     * @since 2.7.4
+     * @since 2.7.5
      */
     protected void dispatch(Event event) {
         EventDispatcher.getDefaultExtension().dispatch(event);

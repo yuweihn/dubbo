@@ -31,9 +31,10 @@ import org.apache.dubbo.config.ModuleConfig;
 import org.apache.dubbo.config.MonitorConfig;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.ProviderConfig;
+import org.apache.dubbo.config.ReferenceConfigBase;
 import org.apache.dubbo.config.RegistryConfig;
-import org.apache.dubbo.config.service.ReferenceConfigBase;
-import org.apache.dubbo.config.service.ServiceConfigBase;
+import org.apache.dubbo.config.ServiceConfigBase;
+import org.apache.dubbo.config.SslConfig;
 import org.apache.dubbo.rpc.model.ApplicationModel;
 
 import java.util.Collection;
@@ -111,6 +112,14 @@ public class ConfigManager extends LifecycleAdapter implements FrameworkExt {
 
     public Optional<MetricsConfig> getMetrics() {
         return ofNullable(getConfig(getTagName(MetricsConfig.class)));
+    }
+
+    public void setSsl(SslConfig sslConfig) {
+        addConfig(sslConfig, true);
+    }
+
+    public Optional<SslConfig> getSsl() {
+        return ofNullable(getConfig(getTagName(SslConfig.class)));
     }
 
     // ConfigCenterConfig correlative methods
