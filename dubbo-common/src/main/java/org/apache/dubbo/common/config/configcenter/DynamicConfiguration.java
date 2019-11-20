@@ -20,12 +20,9 @@ import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.config.Configuration;
 import org.apache.dubbo.rpc.model.ApplicationModel;
 
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.TreeMap;
 
 import static org.apache.dubbo.common.config.configcenter.DynamicConfigurationFactory.getDynamicConfigurationFactory;
 import static org.apache.dubbo.common.extension.ExtensionLoader.getExtensionLoader;
@@ -157,42 +154,6 @@ public interface DynamicConfiguration extends Configuration, AutoCloseable {
     }
 
     /**
-     * Remove Config mapped to the given key under the {@link #DEFAULT_GROUP default group}
-     *
-     * @param key the key to represent a configuration
-     * @return the content of configuration was removed
-     * @throws UnsupportedOperationException If the under layer does not support
-     * @since 2.7.5
-     */
-    default String removeConfig(String key) throws UnsupportedOperationException {
-        return removeConfig(key, DEFAULT_GROUP);
-    }
-
-    /**
-     * Remove Config mapped to the given key and the given group.
-     *
-     * @param key   the key to represent a configuration
-     * @param group the group where the key belongs to
-     * @return the content of configuration was removed
-     * @throws UnsupportedOperationException If the under layer does not support
-     * @since 2.7.5
-     */
-    default String removeConfig(String key, String group) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("No support");
-    }
-
-    /**
-     * Get all groups
-     *
-     * @return the read-only non-null {@link Set set} of config keys
-     * @throws UnsupportedOperationException If the under layer does not support
-     * @since 2.7.5
-     */
-    default Set<String> getConfigGroups() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("No support");
-    }
-
-    /**
      * Get the config keys by the specified group
      *
      * @param group the specified group
@@ -202,36 +163,6 @@ public interface DynamicConfiguration extends Configuration, AutoCloseable {
      */
     default SortedSet<String> getConfigKeys(String group) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("No support");
-    }
-
-    /**
-     * Get the {@link SortedMap} with with config keys and contents value by the specified group
-     *
-     * @param group the specified group
-     * @return the read-only non-null sorted {@link SortedMap map}
-     * @throws UnsupportedOperationException If the under layer does not support
-     * @since 2.7.5
-     */
-    default SortedMap<String, String> getConfigs(String group) throws UnsupportedOperationException {
-        return getConfigs(group, -1);
-    }
-
-    /**
-     * Get the {@link SortedMap} with with config keys and content value by the specified group
-     *
-     * @param group   the specified group
-     * @param timeout the millisecond for timeout
-     * @return the read-only non-null sorted {@link SortedMap map}
-     * @throws UnsupportedOperationException If the under layer does not support
-     * @throws IllegalStateException         If timeout exceeds
-     * @since 2.7.5
-     */
-    default SortedMap<String, String> getConfigs(String group, long timeout) throws UnsupportedOperationException,
-            IllegalStateException {
-        SortedMap<String, String> configs = new TreeMap<>();
-        SortedSet<String> configKeys = getConfigKeys(group);
-        configKeys.forEach(key -> configs.put(key, getString(key)));
-        return Collections.unmodifiableSortedMap(configs);
     }
 
     /**
