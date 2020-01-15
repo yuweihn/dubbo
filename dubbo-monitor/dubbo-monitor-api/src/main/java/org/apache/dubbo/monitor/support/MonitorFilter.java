@@ -52,7 +52,7 @@ import static org.apache.dubbo.rpc.Constants.OUTPUT_KEY;
  * MonitorFilter. (SPI, Singleton, ThreadSafe)
  */
 @Activate(group = {PROVIDER, CONSUMER})
-public class MonitorFilter implements Filter, Filter.Listener {
+public class MonitorFilter implements Filter, Filter.Listener2 {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitorFilter.class);
     private static final String MONITOR_FILTER_START_TIME = "monitor_filter_start_time";
@@ -92,12 +92,7 @@ public class MonitorFilter implements Filter, Filter.Listener {
     // concurrent counter
     private AtomicInteger getConcurrent(Invoker<?> invoker, Invocation invocation) {
         String key = invoker.getInterface().getName() + "." + invocation.getMethodName();
-        AtomicInteger concurrent = concurrents.get(key);
-        if (concurrent == null) {
-            concurrents.putIfAbsent(key, new AtomicInteger());
-            concurrent = concurrents.get(key);
-        }
-        return concurrent;
+        return concurrents.computeIfAbsent(key, k -> new AtomicInteger());
     }
 
     @Override

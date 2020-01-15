@@ -77,7 +77,7 @@ public class ApplicationModel {
 
     private static final ExtensionLoader<FrameworkExt> loader = ExtensionLoader.getExtensionLoader(FrameworkExt.class);
 
-    public static void iniFrameworkExts() {
+    public static void initFrameworkExts() {
         Set<FrameworkExt> exts = ExtensionLoader.getExtensionLoader(FrameworkExt.class).getSupportedExtensionInstances();
         for (FrameworkExt ext : exts) {
             ext.initialize();
@@ -124,4 +124,5 @@ public class ApplicationModel {
         getConfigManager().destroy();
         getEnvironment().destroy();
     }
+
 }
